@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Line;
+use App\Models\Station;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('stops', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('trip_id');
-            $table->unsignedBigInteger('city_id');
-            $table->foreign('trip_id')->references('id')->on('trips');
-            $table->foreign('city_id')->references('id')->on('cities');
-            $table->unsignedSmallInteger('stop_sequence');
+            $table->foreignIdFor(Line::class);
+            $table->foreignIdFor(Station::class);
+            $table->integer('priority');
             $table->timestamps();
         });
     }

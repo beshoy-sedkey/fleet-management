@@ -9,25 +9,37 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Booking extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'seat_id'];
+      /**
+     * @var string
+     */
+    protected $table = 'bookings';
 
     /**
-     * city
-     *
+     * @var string[]
+     */
+    protected $fillable = ['user_id', 'line_id', 'stop_id'];
+
+    /**
      * @return BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * city
-     *
      * @return BelongsTo
      */
-    public function seat(): BelongsTo
+    public function line(): BelongsTo
     {
-        return $this->belongsTo(Seat::class, 'seat_id');
+        return $this->belongsTo(Line::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function stop(): BelongsTo
+    {
+        return $this->belongsTo(Stop::class);
     }
 }

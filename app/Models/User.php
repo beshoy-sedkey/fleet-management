@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
+/**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -45,10 +46,34 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the bookings for this user
-     * @return HasOne
+     * @param $password
+     * @return void
      */
-    public function bookings(): hasMany
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = Hash::make($password);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function reservations(): HasMany
     {
         return $this->hasMany(Booking::class);
     }

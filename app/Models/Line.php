@@ -4,37 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Stop extends Model
+class Line extends Model
 {
     use HasFactory;
 
     /**
      * @var string
      */
-    protected $table = 'stops';
+    protected $table = 'lines';
 
     /**
      * @var string[]
      */
-    protected $fillable = ['line_id', 'station_id', 'priority'];
+    protected $fillable = ['name', 'seats'];
 
     /**
-     * @return BelongsTo
+     * @return HasMany
      */
-    public function line(): BelongsTo
+    public function stops(): HasMany
     {
-        return $this->belongsTo(Line::class);
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function station(): BelongsTo
-    {
-        return $this->belongsTo(Station::class);
+        return $this->hasMany(Stop::class);
     }
 
     /**
